@@ -12,6 +12,27 @@ import {
 import Paper from '@mui/material/Paper';
 import { styled } from '@mui/material/styles';
 
+function Welcome() {
+//Probar si tiene acceso
+try {
+  const response = fetch("http://localhost:8080/api/test/user", {
+    method: "GET",
+    headers: { "x-access-token": localStorage.getItem("token") },
+  }).then(function (response) {
+    console.log(response);
+    console.log(response.status);
+    console.log(response.ok);
+    console.log(response.statusText);
+    console.log(response.type);
+    console.log(response.url);
+    console.log(response.redirected);
+    console.log(response.bodyUsed);
+    console.log(response.json());
+    return response.json();
+  }).catch(error => console.error('Error:', error))
+}catch(error){
+  console.log(error);
+}
 const Item = styled(Paper)(({ theme }) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -20,7 +41,6 @@ const Item = styled(Paper)(({ theme }) => ({
     color: theme.palette.text.secondary,
   }));
 
-export default function Welcome() {
   return (
     <Grid container spacing={3} sx={{mt:15}}>
   <Grid item xs >
@@ -37,3 +57,5 @@ export default function Welcome() {
 </Grid>
   );
 }
+
+export default Welcome;
