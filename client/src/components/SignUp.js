@@ -4,6 +4,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import { CircularProgress } from "@mui/material"
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -110,7 +111,7 @@ const SignUpForm = () => {
             errorMessage: "",
           },
         });
-      setSignUp({ ...signUp, [e.target.name]: e.target.value });
+        setSignUp({ ...signUp, [e.target.name]: e.target.value });
       } else {
         setFormValues({
           ...formValues,
@@ -281,7 +282,11 @@ const SignUpForm = () => {
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign Up
+              {loading ? (
+                <CircularProgress color="inherit" size={25} />
+              ) : (
+                " Sign Up"
+              )}
             </Button>
             <Snackbar open={open} autoHideDuration={500} onClose={handleClose}>
               <Alert
@@ -291,6 +296,7 @@ const SignUpForm = () => {
               >
                 Registrado con exito!
               </Alert>
+              <Alert severity="error">Ocurrio un error!</Alert>
             </Snackbar>
             <Grid container justifyContent="flex-end">
               <Grid item>

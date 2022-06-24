@@ -12,33 +12,167 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import {Navigate, useNavigate} from 'react-router-dom'
+import { Navigate, useNavigate } from 'react-router-dom';
+import { useEffect, useState } from "react";
 
-function Copyright(props) {
-  return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://www.linkedin.com/in/hector-t-2a6680113/">
-        Linkedin Hector T
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
-  );
-}
 
-const theme = createTheme();
 
-export default function SignIn() {
-    const navegate = useNavigate()
-  const handleSubmit = (event) => {
+function SignIn() {
+
+  const [formValues, setFormValues] = useState({
+    email: {
+      value: "",
+      error: false,
+      errorMessage: "Inserta un email valido",
+    },
+    password: {
+      value: "",
+      error: false,
+      errorMessage: "Inserta un password valido",
+    },
+  });
+
+  const [signin, setSignIn] = useState({
+    email: "",
+    password: "",
+  });
+  const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    navegate("/login");
+    setOpen(false);
+  };
+
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    const formFields = Object.keys(formValues);
+    try {
+      const response = await fetch("http://localhost:8080/api/auth/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(signin),
+      });
+      const data = await response.json();
+      console.log(data);
+      localStorage.setItem('Token', data.accessToken);
+      console.log(localStorage);
+      //handleClick();
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleChange = (e) => {
+    if (e.target.value === "") {
+      setFormValues({
+        ...formValues,
+        [e.target.name]: {
+          value: e.target.value,
+          error: true,
+          errorMessage: "Inserta un " + e.target.name + " valido",
+        },
+      });
+    } else if (e.target.name === "email") {
+      if (/^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(e.target.value)) {
+        setFormValues({
+          ...formValues,
+          [e.target.name]: {
+            value: e.target.value,
+            error: false,
+            errorMessage: "",
+          },
+        });
+        setSignIn({ ...signin, [e.target.name]: e.target.value });
+      } else {
+        setFormValues({
+          ...formValues,
+          [e.target.name]: {
+            value: e.target.value,
+            error: true,
+            errorMessage: "Inserta un " + e.target.name + " valido",
+          },
+        });
+      }
+    } else if (e.target.name === "password") {
+      if (
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+          e.target.value
+        )
+      ) {
+        setFormValues({
+          ...formValues,
+          [e.target.name]: {
+            value: e.target.value,
+            error: false,
+            errorMessage: "",
+          },
+        });
+        setSignIn({ ...signin, [e.target.name]: e.target.value });
+
+      } else {
+        setFormValues({
+          ...formValues,
+          [e.target.name]: {
+            value: e.target.value,
+            error: true,
+            errorMessage:
+              "Inserta un " +
+              e.target.name +
+              " valido: 8 caracteres, 1 mayuscula, 1 minuscula, 1 numero y 1 caracter especial",
+          },
+        });
+      }
+    } else {
+      setFormValues({
+        ...formValues,
+        [e.target.name]: {
+          value: e.target.value,
+          error: false,
+          errorMessage: "",
+        },
+      });
+      setSignIn({ ...signin, [e.target.name]: e.target.value });
+    }
+    console.log(signin);
+  };
+
+  /* TERMINA HANDLER --------------------------------*/
+
+  function Copyright(props) {
+    return (
+      <Typography variant="body2" color="text.secondary" align="center" {...props}>
+        {'Copyright © '}
+        <Link color="inherit" href="https://www.linkedin.com/in/hector-t-2a6680113/">
+          Linkedin Hector T
+        </Link>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    );
+  }
+
+  const theme = createTheme();
+
+  const navegate = useNavigate()
+  /* const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log({
       email: data.get('email'),
       password: data.get('password'),
     });
-  };
+  }; */
 
   return (
     <ThemeProvider theme={theme}>
@@ -61,24 +195,33 @@ export default function SignIn() {
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ m: 1 }}>
             <TextField
-              margin="normal"
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Email"
               name="email"
+              onChange={handleChange}
               autoComplete="email"
-              autoFocus
+              error={formValues.email.error}
+              helperText={
+                formValues.email.error && formValues.email.errorMessage
+              }
             />
             <TextField
-              margin="normal"
               required
+              sx={{ mt: 1 }}
               fullWidth
               name="password"
               label="Password"
+              onChange={handleChange}
               type="password"
               id="password"
-              autoComplete="current-password"
+              autoComplete="new-password"
+              error={formValues.password.error}
+              helperText={
+                formValues.password.error &&
+                formValues.password.errorMessage
+              }
             />
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
@@ -89,18 +232,18 @@ export default function SignIn() {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
-              
+
             >
               Sign In
             </Button>
             <Grid container>
-              <Grid item sx={{mr:4}}>
+              <Grid item sx={{ mr: 4 }}>
                 <Link variant="body2">
                   Olvidaste tu contraseña?
                 </Link>
               </Grid>
-              <Grid item sx={{mb:8}}>
-                <Link onClick={() => navegate(`/signup`)} variant="body2">
+              <Grid item sx={{ mb: 8 }}>
+                <Link onClick={() => navegate(`/`)} variant="body2">
                   {"No tienes cuenta? Registrate"}
                 </Link>
               </Grid>
@@ -112,3 +255,5 @@ export default function SignIn() {
     </ThemeProvider>
   );
 }
+
+export default SignIn;
