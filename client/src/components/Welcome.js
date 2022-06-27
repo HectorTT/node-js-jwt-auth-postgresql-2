@@ -15,10 +15,10 @@ import { styled } from '@mui/material/styles';
 function Welcome() {
 //Probar si tiene acceso
 try {
-  const response = fetch("http://localhost:8080/api/test/user", {
+  const response =  fetch("http://localhost:8080/api/test/user", {
     method: "GET",
     headers: { "x-access-token": localStorage.getItem("token") },
-  }).then(function (response) {
+  }).then(async function (response) {
     console.log(response);
     console.log(response.status);
     console.log(response.ok);
@@ -27,8 +27,7 @@ try {
     console.log(response.url);
     console.log(response.redirected);
     console.log(response.bodyUsed);
-    console.log(response.json());
-    return response.json();
+   
   }).catch(error => console.error('Error:', error))
 }catch(error){
   console.log(error);

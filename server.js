@@ -32,9 +32,17 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
 });
 
+//Asi se usan las rutas  no tiene u middleware
+/* const poductosroute = require('./app/routes/productos.route');
+app.use(poductosroute); */
 // routes
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
+require('./app/routes/productos.route')(app);
+require('./app/routes/ordenes.routes')(app);
+
+
+
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;

@@ -81,7 +81,7 @@ function SignIn() {
         localStorage.clear();
         localStorage.setItem("token", data.accessToken);
         console.log(localStorage);
-        navegate("/");
+        navegate("/home");
       } else {
         //Si no se loguea se muestra un error en la pantalla
         console.log(data, data.message);
