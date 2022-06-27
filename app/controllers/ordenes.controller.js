@@ -21,7 +21,7 @@ exports.createOrden = (req, res) => {
             }
           }).then(productos => {
             orden.setProductos(productos).then(() => {
-              res.send({ message: "User was registered successfully!" });
+              res.send({ message: "Orden Creada con exito!" });
             });
           });
         }
@@ -46,7 +46,7 @@ exports.createOrden = (req, res) => {
     // Save User to Database
     Orden.destroy({ where: { id: req.params.id } })
         .then(orden => {
-            res.send({ message: "Orden eliminado!" });
+            res.send({ message: "Orden eliminada!" });
         })
         .catch((error) => {
             console.log(error);

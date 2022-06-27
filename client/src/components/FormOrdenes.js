@@ -31,7 +31,7 @@ export default  function FormOrdenes() {
     const [age, setAge] = React.useState('');
 
   const handleChangeP = (event) => {
-    setAge(event.target.value);
+    setProducto(event.target.value);
   };
 
     const [formValuesP, setFormValuesP] = useState({
@@ -52,11 +52,7 @@ export default  function FormOrdenes() {
           },
       });
     
-      const [producto, setProducto] = useState({
-        nombre: "",
-        cantidad: "",
-        precio: "",
-      });
+      const [Producto, setProducto] = useState([]);
         const [open, setOpen] = useState(false);
         const [loading, setLoading] = useState(false);
         const [editing, setEditing] = useState(false);
@@ -75,7 +71,10 @@ export default  function FormOrdenes() {
                 //rows= [createData(item.nombre, item.precio, item.cantidad)];
                 setProdcts(data);
                 });
-            
+                Product.map((item, i) => {
+                  console.log(item);
+                  console.log(i);
+                });
             /* setTasks(data); */
         }
        // setProdcts(rows)
@@ -96,7 +95,7 @@ export default  function FormOrdenes() {
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8'
                 },
-                body: JSON.stringify(producto),
+                body: JSON.stringify(Producto),
             });
             const data = await res.json();
             console.log(data);
@@ -110,7 +109,7 @@ export default  function FormOrdenes() {
                 headers: {
                     'Content-Type': 'application/json;charset=utf-8'
                 },
-                body: (JSON.stringify(producto)),
+                body: (JSON.stringify(Producto)),
             });
             const data = await res.json();
             console.log(data);
@@ -142,7 +141,7 @@ export default  function FormOrdenes() {
               errorMessage: "",
             },
           });
-          setProducto({ ...producto, [e.target.name]: e.target.value });
+          setProducto({ ...Producto, [e.target.name]: e.target.value });
         } else {
           setFormValuesP({
             ...formValuesP,
@@ -167,7 +166,7 @@ export default  function FormOrdenes() {
               errorMessage: "",
             },
           });
-          setProducto({ ...producto, [e.target.name]: e.target.value });
+          setProducto({ ...Producto, [e.target.name]: e.target.value });
   
         } else {
           setFormValuesP({
@@ -196,7 +195,7 @@ export default  function FormOrdenes() {
               errorMessage: "",
             },
           });
-          setProducto({ ...producto, [e.target.name]: e.target.value });
+          setProducto({ ...Producto, [e.target.name]: e.target.value });
   
         } else {
           setFormValuesP({
@@ -220,9 +219,9 @@ export default  function FormOrdenes() {
             errorMessage: "",
           },
         });
-        setProducto({ ...producto, [e.target.name]: e.target.value });
+        setProducto({ ...Producto, [e.target.name]: e.target.value });
       }
-      console.log(producto);
+      console.log(Producto);
     };
 
 return (
@@ -265,13 +264,14 @@ return (
             <Select
                 labelId="demo-simple-select-label"
                 id="demo-simple-select"
-                value={age}
-                label="Age"
+                value={Product}
+                label="Productos"
                 onChange={handleChangeP}
             >
-                {/* {producto.map((row) => (
-                    <MenuItem value={row.id} key={row.id}>Ten</MenuItem>
-                ))} */}
+                {Product.map((item, i) => (
+                    <MenuItem value={item.id} key={item.id}>{item.nombre}</MenuItem>
+                    //console.log(item.nombre);
+                ))}
             </Select>
             </>
             <TextField
@@ -304,29 +304,6 @@ return (
             >
               Gurdar producto
             </Button>
-            <Snackbar 
-            //open={open} 
-            autoHideDuration={3000}
-                //onClose={handleClose}
-                >
-              <Alert
-                //onClose={handleCloseErr}
-                severity="error"
-                sx={{ width: "100%" }}
-              >
-                Contraseña o correo incorrectos!
-              </Alert>
-            </Snackbar>
-            <Grid container>
-              <Grid item sx={{ mr: 4 }}>
-                <Link variant="body2">Olvidaste tu contraseña?</Link>
-              </Grid>
-              <Grid item sx={{ mb: 8 }}>
-                <Link onClick={() => navegate(`/`)} variant="body2">
-                  {"No tienes cuenta? Registrate"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Container>

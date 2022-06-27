@@ -255,29 +255,6 @@ return (
             >
               Gurdar producto
             </Button>
-            <Snackbar 
-            //open={open} 
-            autoHideDuration={3000}
-                //onClose={handleClose}
-                >
-              <Alert
-                //onClose={handleCloseErr}
-                severity="error"
-                sx={{ width: "100%" }}
-              >
-                Contraseña o correo incorrectos!
-              </Alert>
-            </Snackbar>
-            <Grid container>
-              <Grid item sx={{ mr: 4 }}>
-                <Link variant="body2">Olvidaste tu contraseña?</Link>
-              </Grid>
-              <Grid item sx={{ mb: 8 }}>
-                <Link onClick={() => navegate(`/`)} variant="body2">
-                  {"No tienes cuenta? Registrate"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
       </Container>
