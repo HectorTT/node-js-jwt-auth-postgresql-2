@@ -81,11 +81,11 @@ function FormProductos() {
             });
             const data = await res.json();
             console.log(data);
-            navegate("/login");
+            navegate("/home");
         }
 
         setLoading(false);
-        navegate('/');
+        navegate('/home');
     }
 
     const handleChangeFormP = (e) => {

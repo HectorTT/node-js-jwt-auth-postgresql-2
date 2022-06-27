@@ -242,7 +242,7 @@ return (
             <InventoryOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Agregar Prducto
+            Agregar Orden de Compra
           </Typography>
           <Box
             component="form"
@@ -250,15 +250,6 @@ return (
             noValidate
             sx={{ m: 1 }}
           >
-            <TextField
-              required
-              fullWidth
-              id="nombre"
-              label="Nombre"
-              name="nombre"
-              onChange={handleChangeFormP}
-              autoComplete="Nombre"
-            />
              <>
              <InputLabel id="demo-simple-select-label">Productos</InputLabel>
             <Select

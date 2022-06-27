@@ -86,6 +86,7 @@ const SignUpForm = () => {
       console.log(response);
       handleClick();
       setLoading(false);
+      navegate("/login");
     } catch (error) {
       console.error(error);
     }
